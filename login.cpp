@@ -1,3 +1,10 @@
+// OMNI
+//Description: Program simulates login and creating accounts.  Account registering requires unique ID name.
+//Deletion requires correct password to delete and cross checked with info in file.
+//Logs in and confirms
+
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,7 +21,7 @@ bool loggedIn() {
 	cout << "Enter password: "; cin >> password;
 
 
-	ifstream read("data\\" + username + ".txt");
+	ifstream read(username + ".txt");
 	getline(read, userInput);
 	getline(read, userPassword);
 
@@ -70,7 +77,7 @@ bool uniqueUserName(string userName) {
 
 
 bool pwValidate() {
-	
+	return false;
 }
 void deleteUsername() {
 	
@@ -81,11 +88,14 @@ void deleteUsername() {
 
 int main() {
 	int select = 0;
-	bool uniqueID = false;
+	
 
 
 
 	while (select != 4) {
+
+		bool uniqueID = false;
+
 		cout << "1: Register\n";
 		cout << "2: Login\n";
 		cout << "3: Print\n";
@@ -100,11 +110,23 @@ int main() {
 		if (select == 1) {
 	
 			while ( uniqueID == false) {
-				uniqueID = uniqueUserName(input_username);
+
+				
+
+				
 				cout << "select a username: ";
 				cin >> input_username;
+
+				uniqueID = uniqueUserName(input_username);
+				if (uniqueID == false) {
+					input_username = "";
+				}
+				
+				//cin.clear();
+				//cin.ignore('\n');
 			}
 			 
+
 			
 			cout << "select a password: ";
 			cin >> password;
@@ -113,6 +135,16 @@ int main() {
 			file.open(input_username + ".txt");
 			file << input_username << endl << password;
 			file.close();
+		}
+		else if (select == 2) {
+			bool loginVerify = false;
+			loginVerify = loggedIn();
+			if (loginVerify == true) {
+				cout << "You are now logged in" << endl;
+			}
+			else {
+				cout << "Invalid email/password combo.  Please try again" << endl;
+			}
 		}
 		else if (select == 3) {
 			cout << "search username:\n";
